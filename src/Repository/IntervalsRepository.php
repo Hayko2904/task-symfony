@@ -23,16 +23,11 @@ class IntervalsRepository extends ServiceEntityRepository
 
     public function findRange($value): ?array
     {
-        $val = $value;
-        for ($i = 0; $i < 19 - strlen($value); $i++) {
-            $val = $val . '0';
-        }
-
         return $this->createQueryBuilder('i')
             ->select('i.id')
             ->where('i.min <= :val')
             ->andWhere('i.max >= :val')
-            ->setParameter('val', $val)
+            ->setParameter('val', $value . str_repeat('0', 19 - strlen($value)))
             ->getQuery()
             ->getOneOrNullResult();
     }
