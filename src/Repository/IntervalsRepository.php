@@ -27,7 +27,7 @@ class IntervalsRepository extends ServiceEntityRepository
             ->select('i.id')
             ->where('i.min <= :val')
             ->andWhere('i.max >= :val')
-            ->setParameter('val', $value . str_repeat('0', $length - strlen($value)))
+            ->setParameter('val', $value . str_repeat('0', $length > strlen($value) ? $length - strlen($value) : 0))
             ->getQuery()
             ->getOneOrNullResult();
     }
