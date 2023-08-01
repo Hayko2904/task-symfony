@@ -21,13 +21,13 @@ class IntervalsRepository extends ServiceEntityRepository
         parent::__construct($registry, Intervals::class);
     }
 
-    public function findRange($value): ?array
+    public function findRange($value, $length = 0): ?array
     {
         return $this->createQueryBuilder('i')
             ->select('i.id')
             ->where('i.min <= :val')
             ->andWhere('i.max >= :val')
-            ->setParameter('val', $value . str_repeat('0', 19 - strlen($value)))
+            ->setParameter('val', $value . str_repeat('0', $length - strlen($value)))
             ->getQuery()
             ->getOneOrNullResult();
     }

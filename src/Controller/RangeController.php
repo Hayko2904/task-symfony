@@ -13,6 +13,8 @@ class RangeController extends AbstractController
 {
     protected $intervalsRepository;
 
+    const LENGTH = 19;
+
     public function __construct(
         IntervalsRepository $intervalsRepository
     )
@@ -31,14 +33,14 @@ class RangeController extends AbstractController
     #[Route(path: '/check_range', name: 'check_range', methods: ['GET'])]
     public function checkRange(Request $request): Response
     {
-        if (strlen($request->get('range')) > 19) {
+        if (strlen($request->get('range')) > self::LENGTH) {
             return new Response(
                 'Big number',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
 
-        $response = $this->intervalsRepository->findRange($request->get('range'));
+        $response = $this->intervalsRepository->findRange($request->get('range'), self::LENGTH);
 
         if (!is_null($response) && count($response)) {
             return new Response(
